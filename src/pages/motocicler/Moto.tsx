@@ -1,9 +1,9 @@
 import React from 'react'
 
-export function Car() {
+export function Moto() {
   return (
     <>
-      <p>Car</p>
+        <p>moto</p>
     </>
   )
 }
