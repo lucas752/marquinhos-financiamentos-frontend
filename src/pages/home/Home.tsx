@@ -3,7 +3,7 @@ import logo from "../../assets/marquinhos.png"
 
 export function Home() {
   return (
-    <main className='w-full'>
+    <main className='w-full h-screen flex flex-col'>
         <header className='bg-[#565651] flex flex-row justify-center p-1'>
             <p className='text-[#ffffff]'>Marquinhos Financiamentos</p>
         </header>
@@ -26,7 +26,9 @@ export function Home() {
             </div>
         </section>
        
-        <footer>footer</footer>
+        <footer className='bg-[#565651] w-full flex flex-row justify-center p-1 mt-auto'>
+            <p className='text-[#ffffff]'>&copy; Marquinhos Financiamentos</p>
+        </footer>
     </main>
   )
 }
