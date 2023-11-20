@@ -15,6 +15,9 @@ export function Car() {
           </div>
         </div>
       </section>
+      <section>
+        
+      </section>
     </>
   )
 }
