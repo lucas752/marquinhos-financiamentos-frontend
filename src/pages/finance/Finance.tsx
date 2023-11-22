@@ -33,8 +33,8 @@ export default function Finance() {
 
   return (
     <div className="flex justify-center">
-      <div className="flex justify-center flex-col">
-        <h1 className="text-[#f3bc26] text-4xl font-bold p-4">
+      <div className="flex justify-center flex-col mt-10">
+        <h1 className="text-[#f3bc26] text-4xl font-bold pb-4">
           Simule o seu financiamento!
         </h1>
         <div className="flex justify-center">
