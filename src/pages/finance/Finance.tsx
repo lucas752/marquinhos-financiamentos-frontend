@@ -3,6 +3,7 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { api } from "../../services/api";
 import { Financing } from "../../interfaces/financing";
+import { toast } from "react-toastify";
 
 export default function Finance() {
   const [downPayment, setDownPayment] = useState(0.0);
@@ -27,17 +28,26 @@ export default function Finance() {
 
   const handleCalcButton = async (ev: React.FormEvent<EventTarget>) => {
     ev.preventDefault();
-    const response = await api.get("/financing", {
-      params: {
-        amountFinanced: amountFinanced,
-        numberInstallments: numberInstallments,
-        downPayment: downPayment,
-      },
-    });
-    if (response.status == 200) {
+    try {
+      const response = await api.get("/financing", {
+        params: {
+          amountFinanced: amountFinanced,
+          numberInstallments: numberInstallments,
+          downPayment: downPayment,
+        },
+      });
       setFinancingResults(response.data);
-    } else {
-      console.log("Deu erro");
+    } catch (error) {
+      toast.error("Ocorreu um erro!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
