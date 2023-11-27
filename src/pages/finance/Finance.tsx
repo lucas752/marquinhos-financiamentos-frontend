@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
+import { api } from "../../services/api";
+import { Financing } from "../../interfaces/financing";
+import { toast } from "react-toastify";
 
 export default function Finance() {
   const [downPayment, setDownPayment] = useState(0.0);
-  const [amountFinanced, setAmountFinanced] = useState(1000);
-  const [numberInstallments, setNumberInstallments] = useState(1);
-  const [result, setResult] = useState(false);
+  const [amountFinanced, setAmountFinanced] = useState(0);
+  const [numberInstallments, setNumberInstallments] = useState(0);
+  const [financingResults, setFinancingResults] = useState<Financing>();
 
   const handleChangeDownPayment = (e: { target: { value: string } }) => {
     const { value } = e.target;
@@ -23,12 +26,29 @@ export default function Finance() {
     setNumberInstallments(Number(value));
   };
 
-  const calcButton = (ev: React.FormEvent<EventTarget>) => {
+  const handleCalcButton = async (ev: React.FormEvent<EventTarget>) => {
     ev.preventDefault();
-    console.log("Valor da entrada " + downPayment);
-    console.log("Valor financiado: " + amountFinanced);
-    console.log("Número de parcelas: " + numberInstallments);
-    setResult(true);
+    try {
+      const response = await api.get("/financing", {
+        params: {
+          amountFinanced: amountFinanced,
+          numberInstallments: numberInstallments,
+          downPayment: downPayment,
+        },
+      });
+      setFinancingResults(response.data);
+    } catch (error) {
+      toast.error("Ocorreu um erro!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   return (
@@ -39,7 +59,7 @@ export default function Finance() {
         </h1>
         <div className="flex justify-center">
           <form
-            onSubmit={calcButton}
+            onSubmit={handleCalcButton}
             className="flex items-center flex-col gap-3"
           >
             <Input
@@ -67,11 +87,23 @@ export default function Finance() {
             <Button text="Calcular" />
           </form>
         </div>
-        {result ? (
+        {financingResults ? (
           <div className="bg-[#dc143c] mt-3 shadow-lg rounded-2xl p-6">
             <p className="text-[#f3bc26] font-bold ">Katchau!</p>
-            <p className="text-white font-bold">Parcela do financiamento: </p>
-            <p className="text-white font-bold">Valor total final: </p>
+            <p className="text-white font-bold">
+              Parcela do financiamento:{" "}
+              {financingResults.installmentsValue.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
+            </p>
+            <p className="text-white font-bold">
+              Valor total final:{" "}
+              {financingResults.finalAmount.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
+            </p>
             <p className="text-white font-bold">
               Gostou?{" "}
               <a className="text-[#f3bc26]" href="">
