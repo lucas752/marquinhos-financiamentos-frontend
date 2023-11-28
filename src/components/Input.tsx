@@ -1,5 +1,5 @@
 export default function Input(props: {
-  labelText: string;
+  labelText?: string;
   type: string;
   min?: number;
   max?: number;

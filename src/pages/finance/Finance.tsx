@@ -4,6 +4,7 @@ import Button from "../../components/Button";
 import { api } from "../../services/api";
 import { Financing } from "../../interfaces/financing";
 import { toast } from "react-toastify";
+import { AiFillThunderbolt } from "react-icons/ai";
 
 export default function Finance() {
   const [downPayment, setDownPayment] = useState(0.0);
@@ -89,7 +90,9 @@ export default function Finance() {
         </div>
         {financingResults ? (
           <div className="bg-[#dc143c] mt-3 shadow-lg rounded-2xl p-6">
-            <p className="text-[#f3bc26] font-bold ">Katchau!</p>
+            <p className="flex text-[#f3bc26] font-bold flex-row items-center">
+              Katchau! <AiFillThunderbolt color="#f3bc26" />
+            </p>
             <p className="text-white font-bold">
               Parcela do financiamento:{" "}
               {financingResults.installmentsValue.toLocaleString("pt-BR", {
