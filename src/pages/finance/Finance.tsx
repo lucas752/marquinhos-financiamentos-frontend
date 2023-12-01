@@ -29,26 +29,42 @@ export default function Finance() {
 
   const handleCalcButton = async (ev: React.FormEvent<EventTarget>) => {
     ev.preventDefault();
-    try {
-      const response = await api.get("/financing", {
-        params: {
-          amountFinanced: amountFinanced,
-          numberInstallments: numberInstallments,
-          downPayment: downPayment,
-        },
-      });
-      setFinancingResults(response.data);
-    } catch (error) {
-      toast.error("Ocorreu um erro!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+    if (downPayment > amountFinanced) {
+      toast.warn(
+        "O valor da entrada tem que ser menor que o valor do financiamento!",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
+    } else {
+      try {
+        const response = await api.get("/financing", {
+          params: {
+            amountFinanced: amountFinanced,
+            numberInstallments: numberInstallments,
+            downPayment: downPayment,
+          },
+        });
+        setFinancingResults(response.data);
+      } catch (error) {
+        toast.error("Ocorreu um erro!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     }
   };
 

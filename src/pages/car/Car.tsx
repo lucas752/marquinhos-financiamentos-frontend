@@ -183,28 +183,51 @@ export function Car() {
   const handleCalcButton = async (ev: React.FormEvent<EventTarget>) => {
     ev.preventDefault();
 
-    try {
-      const response = await api.get("/financing", {
-        params: {
-          amountFinanced: Number(
-            vehicle?.price.replace("R$ ", "").replace(".", "").replace(",", ".")
-          ),
-          numberInstallments: numberInstallments,
-          downPayment: downPayment,
-        },
-      });
-      setFinancingResults(response.data);
-    } catch (error) {
-      toast.error("Ocorreu um erro interno, tente novamente mais tarde!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+    const formattedPrice = Number(
+      vehicle?.price.replace("R$ ", "").replace(".", "").replace(",", ".")
+    );
+
+    if (downPayment > formattedPrice) {
+      toast.warn(
+        "O valor da entrada tem que ser menor que o preço do veículo!",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
+    } else {
+      try {
+        const response = await api.get("/financing", {
+          params: {
+            amountFinanced: Number(
+              vehicle?.price
+                .replace("R$ ", "")
+                .replace(".", "")
+                .replace(",", ".")
+            ),
+            numberInstallments: numberInstallments,
+            downPayment: downPayment,
+          },
+        });
+        setFinancingResults(response.data);
+      } catch (error) {
+        toast.error("Ocorreu um erro interno, tente novamente mais tarde!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     }
   };
 
