@@ -29,26 +29,42 @@ export default function Finance() {
 
   const handleCalcButton = async (ev: React.FormEvent<EventTarget>) => {
     ev.preventDefault();
-    try {
-      const response = await api.get("/financing", {
-        params: {
-          amountFinanced: amountFinanced,
-          numberInstallments: numberInstallments,
-          downPayment: downPayment,
-        },
-      });
-      setFinancingResults(response.data);
-    } catch (error) {
-      toast.error("Ocorreu um erro!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+    if (downPayment > amountFinanced) {
+      toast.warn(
+        "O valor da entrada tem que ser menor que o valor do financiamento!",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
+    } else {
+      try {
+        const response = await api.get("/financing", {
+          params: {
+            amountFinanced: amountFinanced,
+            numberInstallments: numberInstallments,
+            downPayment: downPayment,
+          },
+        });
+        setFinancingResults(response.data);
+      } catch (error) {
+        toast.error("Ocorreu um erro!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     }
   };
 
@@ -68,6 +84,7 @@ export default function Finance() {
               placeholder="R$0.00"
               type="number"
               min={0}
+              step={0.01}
               onChange={handleChangeDownPayment}
             />
             <Input
@@ -82,7 +99,8 @@ export default function Finance() {
               labelText="Valor do financiamento: "
               placeholder="R$1000.00"
               type="number"
-              min={1000}
+              step={0.01}
+              min={1}
               onChange={handleChangeAmountFinanced}
             />
             <Button text="Calcular" />
