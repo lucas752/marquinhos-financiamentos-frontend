@@ -84,6 +84,7 @@ export default function Finance() {
               placeholder="R$0.00"
               type="number"
               min={0}
+              step={0.01}
               onChange={handleChangeDownPayment}
             />
             <Input
@@ -98,7 +99,8 @@ export default function Finance() {
               labelText="Valor do financiamento: "
               placeholder="R$1000.00"
               type="number"
-              min={1000}
+              step={0.01}
+              min={1}
               onChange={handleChangeAmountFinanced}
             />
             <Button text="Calcular" />

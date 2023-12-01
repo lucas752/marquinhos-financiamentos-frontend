@@ -309,12 +309,14 @@ export function Moto() {
                 placeholder="Entrada"
                 type="number"
                 min={0}
+                step={0.01}
               ></Input>
               <Input
                 onChange={handleChangeNumberInstallments}
                 placeholder="Quantidade de parcelas"
                 type="number"
                 min={1}
+                max={60}
               ></Input>
               <Button text="Calcular" />
             </section>
