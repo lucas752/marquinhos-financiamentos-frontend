@@ -16,7 +16,7 @@ export default function Input(props: {
         min={props.min}
         max={props.max}
         placeholder={props.placeholder}
-        className="focus:border-[#dc143c] focus:outline-none   border-2 p-2 rounded-3xl w-72"
+        className="focus:border-[#dc143c] focus:outline-none border-[#c9c9c9] border-2 p-2 rounded-3xl w-72"
         onChange={props.onChange}
         required
       />
