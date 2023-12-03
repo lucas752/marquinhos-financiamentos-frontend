@@ -1,8 +1,9 @@
 export default function Input(props: {
-  labelText: string;
+  labelText?: string;
   type: string;
   min?: number;
   max?: number;
+  step?: number;
   placeholder: string;
   onChange: (e: { target: { value: string } }) => void;
 }) {
@@ -15,8 +16,9 @@ export default function Input(props: {
         type={props.type}
         min={props.min}
         max={props.max}
+        step={props.step}
         placeholder={props.placeholder}
-        className="focus:border-[#dc143c] focus:outline-none   border-2 p-2 rounded-3xl w-72"
+        className="focus:border-[#dc143c] focus:outline-none border-[#c9c9c9] border-2 p-2 rounded-3xl w-72"
         onChange={props.onChange}
         required
       />
