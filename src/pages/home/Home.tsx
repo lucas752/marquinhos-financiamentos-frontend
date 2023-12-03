@@ -2,14 +2,22 @@ import React, { useState } from "react";
 
 import rust from "../../assets/rusteze5.png";
 import sally from "../../assets/Sally.webp";
+import sara from "../../assets/sally2.webp";
+import user from "../../assets/Tom-Mate.webp";
+import { IoIosSend } from "react-icons/io";
 
 import Modal from "react-modal";
 import axios from "axios";
 
+interface ChatReponse {
+  question: string;
+  answer: string;
+}
+
 export function Home() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [content, setContent] = useState<string>("");
-  const [response, setResponse] = useState<string>("");
+  const [reponseList, setReponseList] = useState<Array<ChatReponse>>([]);
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -34,7 +42,11 @@ export function Home() {
         requestData
       );
 
-      setResponse(result.data.answer);
+      setReponseList([
+        ...reponseList,
+        { question: result.data.answer, answer: content },
+      ]);
+      setContent("");
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     }
@@ -86,7 +98,7 @@ export function Home() {
             <img src={sally} alt="" />
           </div>
           <h3 className="">
-            Ainda tem dúvidas? tire algumas antes com a Sally clicando logo
+            Ainda tem dúvidas? tire algumas antes com a Sara clicando logo
             abaixo
           </h3>
         </div>
@@ -102,24 +114,50 @@ export function Home() {
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
           contentLabel="Exemplo de Modal"
-          className={"flex justify-center items-center"}
+          className={"flex justify-center items-center "}
         >
-          <div className=" flex flex-col bg-white w-7/12 p-2 gap-4">
-            <div className="flex flex-col self-end  w-7/12">
+          <div className=" flex flex-col h-screen w-7/12 p-2 gap-4 bg-[#2d3436] overflow-auto">
+            <div className="self-center p-4">
+              <h3 className="text-white text-xl font-bold">Fale com a Sara</h3>
+            </div>
+
+            <div>
+              {reponseList.map(({ answer, question }: ChatReponse) => (
+                <div className="flex flex-col">
+                  <div className="flex flex-col self-end  w-7/12 gap-2">
+                    <div className="w-3/12 h-2/12 self-end">
+                      <img src={user} alt="" />
+                    </div>
+                    <div className=" bg-white border-[#dc143c] border-2 p-2 rounded-3xl">
+                      {answer}
+                    </div>
+                  </div>
+                  <div className="flex flex-col self-start w-7/12 gap-2 ">
+                    <div className="w-2/12 h-2/12">
+                      <img src={sara} alt="" />
+                    </div>
+                    <div className="bg-[#dfe6e9] rounded-3xl p-2 border-[#f3bc26] border-2 mb-10">
+                      {question}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-col self-end  w-7/12 gap-2">
               <input
                 type="text"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 className=" focus:border-[#dc143c] focus:outline-none border-2 p-2 rounded-3xl"
               />
-              <button onClick={fetchData} className="self-end">
-                Obter Resposta
+              <button
+                onClick={fetchData}
+                className="self-end bg-[#f3bc26] p-2 rounded-3xl"
+              >
+                <IoIosSend />
               </button>
             </div>
-
-            <div className="flex flex-col self-start w-7/12">{response}</div>
           </div>
-
           <button onClick={closeModal}>Fechar Modal</button>
         </Modal>
       </section>
